@@ -3,11 +3,44 @@
 <head>
   <meta charset="UTF-8" />
   <title>動画→音声変換（MP3 / WAV / AAC）</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
   <style>
-    body { font-family: sans-serif; padding: 20px; }
-    .row { margin-bottom: 10px; }
+    body {
+      font-family: sans-serif;
+      padding: 20px;
+      max-width: 600px;
+      margin: auto;
+      line-height: 1.6;
+    }
+    h1 {
+      font-size: 22px;
+      margin-bottom: 20px;
+    }
+    .row {
+      margin-bottom: 15px;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    progress {
+      width: 100%;
+      height: 20px;
+    }
+    #downloadArea a {
+      display: inline-block;
+      margin-top: 15px;
+      padding: 10px 15px;
+      background: #0078ff;
+      color: white;
+      text-decoration: none;
+      border-radius: 5px;
+    }
   </style>
 </head>
+
 <body>
   <h1>MP4 / MOV → MP3 / WAV / AAC 変換</h1>
 
@@ -29,12 +62,13 @@
   </div>
 
   <div class="row">
-    <progress id="progress" value="0" max="100" style="width: 300px;"></progress>
-    <span id="status"></span>
+    <progress id="progress" value="0" max="100"></progress>
+    <div id="status"></div>
   </div>
 
   <div class="row" id="downloadArea"></div>
 
-  <script type="module" src="app.js"></script>
+  <!-- ★ GitHub Pages で動くように相対パスで app.js を読み込む -->
+  <script type="module" src="./app.js"></script>
 </body>
 </html>
