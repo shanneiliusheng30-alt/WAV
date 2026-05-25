@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <title>動画→音声変換（MP3 / WAV / AAC）</title>
+  <style>
+    body { font-family: sans-serif; padding: 20px; }
+    .row { margin-bottom: 10px; }
+  </style>
+</head>
+<body>
+  <h1>MP4 / MOV → MP3 / WAV / AAC 変換</h1>
+
+  <div class="row">
+    <input id="fileInput" type="file" accept=".mp4,.mov,video/*" />
+  </div>
+
+  <div class="row">
+    <label>出力フォーマット: </label>
+    <select id="formatSelect">
+      <option value="mp3">MP3</option>
+      <option value="wav">WAV</option>
+      <option value="aac">AAC</option>
+    </select>
+  </div>
+
+  <div class="row">
+    <button id="convertBtn">変換する</button>
+  </div>
+
+  <div class="row">
+    <progress id="progress" value="0" max="100" style="width: 300px;"></progress>
+    <span id="status"></span>
+  </div>
+
+  <div class="row" id="downloadArea"></div>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>
