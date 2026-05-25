@@ -1,5 +1,5 @@
 import { FFmpeg } from "https://unpkg.com/@ffmpeg/ffmpeg@0.12.10/dist/ffmpeg.min.js";
-import { fetchFile, toBlobURL } from "https://unpkg.com/@ffmpeg/util@0.12.10/dist/ffmpeg-util.min.js";
+import { fetchFile } from "https://unpkg.com/@ffmpeg/util@0.12.10/dist/ffmpeg-util.min.js";
 
 const ffmpeg = new FFmpeg();
 
@@ -14,11 +14,14 @@ async function loadFFmpeg() {
   if (ffmpeg.loaded) return;
 
   statusEl.textContent = "FFmpeg 読み込み中...";
-  const baseURL = "https://unpkg.com/@ffmpeg/core@0.12.10/dist/umd";
+
+  // ★ GitHub Pages で動くローカル版 core ファイル読み込み
+  const baseURL = "./ffmpeg";
 
   await ffmpeg.load({
-    coreURL: await toBlobURL(`${baseURL}/ffmpeg-core.js`, "text/javascript"),
-    wasmURL: await toBlobURL(`${baseURL}/ffmpeg-core.wasm`, "application/wasm"),
+    coreURL: `${baseURL}/ffmpeg-core.js`,
+    wasmURL: `${baseURL}/ffmpeg-core.wasm`,
+    workerURL: `${baseURL}/ffmpeg-core.worker.js`,
   });
 
   statusEl.textContent = "FFmpeg 読み込み完了";
@@ -38,7 +41,7 @@ async function convert() {
   await loadFFmpeg();
 
   statusEl.textContent = "ファイル準備中...";
-  progressEl.value = 0;
+  progressEl.value = 10;
 
   await ffmpeg.writeFile(inputName, await fetchFile(file));
 
@@ -52,7 +55,7 @@ async function convert() {
   }
 
   statusEl.textContent = "変換中...";
-  progressEl.value = 30;
+  progressEl.value = 50;
 
   await ffmpeg.exec(args);
 
@@ -60,7 +63,7 @@ async function convert() {
   statusEl.textContent = "出力取得中...";
 
   const data = await ffmpeg.readFile(outputName);
-  const blob = new Blob([data.buffer], { type: getMimeType(ext) });
+  const blob = new Blob([data.buffer]);
   const url = URL.createObjectURL(blob);
 
   downloadArea.innerHTML = "";
@@ -72,13 +75,6 @@ async function convert() {
 
   progressEl.value = 100;
   statusEl.textContent = "完了！";
-}
-
-function getMimeType(ext) {
-  if (ext === "mp3") return "audio/mpeg";
-  if (ext === "wav") return "audio/wav";
-  if (ext === "aac") return "audio/aac";
-  return "application/octet-stream";
 }
 
 convertBtn.addEventListener("click", () => {
